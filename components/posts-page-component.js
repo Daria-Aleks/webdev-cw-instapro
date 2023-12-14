@@ -2,7 +2,7 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { addlike, removelike } from "../index.js";
-// import { compareAsc, format } from 'date-fns'
+import { formatDistanceToNow } from "date-fns";
 
 export function renderPostsPageComponent({ appEl }) {
   let appElems = ''
@@ -39,7 +39,7 @@ export function renderPostsPageComponent({ appEl }) {
           ${safeDescription }
         </p>
         <p class="post-date">
-        ${dateFns.distanceInWordsToNow(post.createdAt)}
+        ${formatDistanceToNow(new Date(post.createdAt))}
         </p>
       </li>`
   })

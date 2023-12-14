@@ -3,6 +3,7 @@ import { addPost } from "./api.js";
 import { getPostsUser } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
+import { formatDistanceToNow } from "date-fns";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -170,12 +171,21 @@ export const renderApp = () => {
   if (page === USER_POSTS_PAGE) {
     let appElems = ''
     posts.forEach((post) => {
-      console.log(post)
+      let safeUserName = post.user.name
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+    let safeDescription = typeof post.description == 'string' ? post.description
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;") : ''
       appElems += 
       `<li class="post">
         <div class="post-header" data-user-id="${post.user.id}">
             <img src="${post.user.imageUrl}" class="post-header__user-image">
-            <p class="post-header__user-name">${post.user.name}</p>
+            <p class="post-header__user-name">${safeUserName}</p>
         </div>
         <div class="post-image-container">
           <img class="post-image" src="${post.imageUrl}">
@@ -189,11 +199,11 @@ export const renderApp = () => {
           </p>
         </div>
         <p class="post-text">
-          <span class="user-name">${post.user.name}</span>
-          ${typeof post.description == 'string' ? post.description : '' }
+          <span class="user-name">${safeUserName}</span>
+          ${safeDescription}
         </p>
         <p class="post-date">
-        ${post.createdAt}
+        ${formatDistanceToNow(new Date(post.createdAt))}
         </p>
       </li>`
     })
