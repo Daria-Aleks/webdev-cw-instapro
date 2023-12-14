@@ -1,6 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "daria-alekseeva";
+//daria-alekseeva
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -20,6 +21,82 @@ export function getPosts({ token }) {
     })
     .then((data) => {
       return data.posts;
+    });
+}
+
+export function getPostsUser(id) {
+  return fetch(postsHost + "/user-posts/" + id, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.posts)
+      return data.posts;
+    });
+}
+
+export function likePost({ token }, id) {
+  return fetch(postsHost + '/' + id + '/like', {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+
+}
+
+export function dislikePost({ token }, id) {
+  return fetch(postsHost + '/' + id + '/dislike', {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+}
+
+export function addPost({ token }, description, imageUrl) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl
+    })
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data)
+      return data;
     });
 }
 
