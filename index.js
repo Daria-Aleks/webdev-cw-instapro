@@ -109,9 +109,15 @@ export const removelike = (id) => {
 }
 
 const addlikeUser = (id, userId) => {
+  posts.forEach(post => {
+    if (post.id == id) {
+      post.isLiked =  true
+      post.likes.push([])
+      renderApp()
+    }
+  })
   likePost({token: getToken()}, id).then(response => {
     getPostsUser(userId).then(data => {
-      posts = data;
       renderApp()
       })
       }
@@ -119,9 +125,16 @@ const addlikeUser = (id, userId) => {
 }
 
 const removelikeUser = (id, userId) => {
+  posts.forEach(post => {
+    if (post.id == id) {
+      post.isLiked =  false
+      post.likes.pop()
+
+      renderApp()
+    }
+  })
   dislikePost({token: getToken()}, id ).then(response => {
     getPostsUser(userId).then(data => {
-      posts = data;
       renderApp()
     })
   })
