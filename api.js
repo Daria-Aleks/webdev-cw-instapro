@@ -24,9 +24,12 @@ export function getPosts({ token }) {
     });
 }
 
-export function getPostsUser(id) {
+export function getPostsUser({token}, id) {
   return fetch(postsHost + "/user-posts/" + id, {
     method: "GET",
+    headers: {
+      Authorization: token,
+    },
   })
     .then((response) => {
       if (response.status === 401) {

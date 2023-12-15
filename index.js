@@ -71,7 +71,7 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      getPostsUser(data.userId).then((response) => {
+      getPostsUser({ token: getToken() }, data.userId).then((response) => {
         posts = response
         renderApp()
       })
@@ -101,7 +101,7 @@ export const addlike = (id) => {
 
 export const removelike = (id) => {
   dislikePost({token: getToken()}, id ).then(response => {
-    getPosts({ token: getToken() }).then(data => {
+    getPosts({ token: getToken()}).then(data => {
       posts = data;
       renderApp()
     })
@@ -111,15 +111,16 @@ export const removelike = (id) => {
 //
 
 const addlikeUser = (id, userId) => {
-  posts.forEach(post => {
-    if (post.id == id) {
-      post.isLiked =  true
-      post.likes.push([])
-      renderApp()
-    }
-  })
+  // posts.forEach(post => {
+  //   if (post.id == id) {
+  //     post.isLiked =  true
+  //     post.likes.push([])
+  //     renderApp()
+  //   }
+  // })
   likePost({token: getToken()}, id).then(response => {
-    getPostsUser(userId).then(data => {
+    getPostsUser({ token: getToken() }, userId).then(data => {
+      posts = data
       renderApp()
       })
       }
@@ -127,16 +128,17 @@ const addlikeUser = (id, userId) => {
 }
 
 const removelikeUser = (id, userId) => {
-  posts.forEach(post => {
-    if (post.id == id) {
-      post.isLiked =  false
-      post.likes.pop()
+  // posts.forEach(post => {
+  //   if (post.id == id) {
+  //     post.isLiked =  false
+  //     post.likes.pop()
 
-      renderApp()
-    }
-  })
+  //     renderApp()
+  //   }
+  // })
   dislikePost({token: getToken()}, id ).then(response => {
-    getPostsUser(userId).then(data => {
+    getPostsUser({ token: getToken() }, userId).then(data => {
+      posts = data
       renderApp()
     })
   })
