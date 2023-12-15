@@ -108,6 +108,8 @@ export const removelike = (id) => {
   })
 }
 
+//
+
 const addlikeUser = (id, userId) => {
   posts.forEach(post => {
     if (post.id == id) {
